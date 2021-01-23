@@ -19,6 +19,9 @@ class DQN:
         self.batch_size = batch_size
         self.LR = LR
 
+        self.model = create_q_network()
+        self.target_model = create_q_network()
+
     
     def create_q_network(self):
         model = Sequential()
@@ -35,7 +38,8 @@ class DQN:
         best_action = np.argmax(q_values)
         policy[best_action]+=1-self.epsilon
         action = np.random.choice(np.arange(len(policy)), p=policy)
-
+        return action
+        
     def add_experience(self, state, action, reward, next_state, done):
         self.memory.append((state, action, reward, next_state, done))
 
