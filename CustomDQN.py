@@ -9,7 +9,7 @@ from tensorflow.keras.optimizers import Adam
 from collections import deque
 
 class DQN:
-    def __init(self, env, MEMORY_SIZE=int(1e6), gamma=0.95, epsilon=0.95, epsilon_decay=0.95, epsilon_final=0.1, batch_size=32, lr=LR):
+    def __init__(self, env, MEMORY_SIZE=int(1e6), gamma=0.95, epsilon=0.95, epsilon_decay=0.95, epsilon_final=0.1, batch_size=32, lr=1e-3):
         self.env = env
         self.memory = deque(maxlen = MEMORY_SIZE)
         self.gamma = gamma
@@ -17,17 +17,17 @@ class DQN:
         self.epsilon_decay = epsilon_decay
         self.epsilon_final = epsilon_final
         self.batch_size = batch_size
-        self.LR = LR
+        self.LR = lr
 
-        self.model = create_q_network()
-        self.target_model = create_q_network()
+        self.model = self.create_q_network()
+        self.target_model = self.create_q_network()
 
     
     def create_q_network(self):
         model = Sequential()
         model.add(Dense(32, input_shape=(self.env.observation_space.shape[0], ), activation="relu"))
         model.add(Dense(16, activation="relu"))
-        model.add(Dense(self.action_space.n, activation="linear"))
+        model.add(Dense(self.env.action_space.n, activation="linear"))
 
         model.compile(loss="mse", optimizer=Adam(lr=self.LR))
         return model
