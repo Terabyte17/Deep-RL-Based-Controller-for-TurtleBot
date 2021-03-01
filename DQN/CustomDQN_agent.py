@@ -1,7 +1,11 @@
 import os
+import sys
 import gym
 import random
 import numpy as np
+
+path = os.path.abspath(os.path.dirname(__file__))
+sys.path.append(path)
 
 import balance_bot
 import tensorflow as tf
