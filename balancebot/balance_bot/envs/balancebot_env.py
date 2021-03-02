@@ -12,7 +12,7 @@ import pybullet_data
 class BalanceBot(gym.Env):
     def __init__(self):
         self._observation = []
-        self.action_space = spaces.Discrete(9)
+        self.action_space = spaces.Box(low=np.array([-1]),high=np.array([1]))
         self.observation_space = spaces.Box(low = np.array([-math.pi, -math.pi, -5]),high = np.array([math.pi, math.pi, 5]))
         self.physicsClient = p.connect(p.GUI)
         p.setAdditionalSearchPath(pybullet_data.getDataPath())
@@ -52,8 +52,7 @@ class BalanceBot(gym.Env):
         return np.array(self._observation)
 
     def _assign_throttle(self, action):
-        dv = 0.1
-        deltav = [-10.*dv, -5.*dv, -2.*dv, -0.1*dv, 0, 0.1*dv, 2.*dv, 5.*dv, 10.*dv][action]
+        deltav = action
         vt = self.vt + deltav
         self.vt = vt
         p.setJointMotorControl2(bodyUniqueId=self.botId,
