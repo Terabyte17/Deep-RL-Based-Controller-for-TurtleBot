@@ -2,6 +2,8 @@ import os
 import sys
 import gym
 import numpy as np
+import pybullet as p
+import time
 import matplotlib.pyplot as plt
 
 path = os.path.abspath(os.path.dirname(__file__))
@@ -16,8 +18,11 @@ from stable_baselines.common.callbacks import CheckpointCallback
 
 if __name__=="__main__":
     env = gym.make("balancebot-v0")
-    model = DQN.load("dqn_tensorboard/FirstModel_160000_steps")
+    model = DQN.load("prevmodel/FirstModel_160000_steps")
     obs = env.reset()
+    p.resetDebugVisualizerCamera(3, 140, -10, [0, 0, 0.1])
+    time.sleep(10000)
+    time.sleep(10)
     vt = []
     while True:
         action = model.predict(obs)
@@ -26,7 +31,6 @@ if __name__=="__main__":
         obs, reward, done, _ = env.step(action[0])
         if done:
             obs = env.reset()
-            break
     plt.plot(vt)
     plt.xlabel("Timesteps")
     plt.ylabel("Velocity of right wheel")

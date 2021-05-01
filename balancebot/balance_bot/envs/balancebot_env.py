@@ -35,8 +35,9 @@ class BalanceBot(gym.Env):
 
     def _reset(self):
         self.vt = 0
-        self.vd = 0
+        self.vd = 1
         self._envStepCounter = 0
+        self.target = 0.1
 
         p.resetSimulation()
         p.setGravity(0, 0, -9.8)
@@ -74,7 +75,8 @@ class BalanceBot(gym.Env):
     def _compute_reward(self):
         _, cubeOrn = p.getBasePositionAndOrientation(self.botId)
         cubeEuler = p.getEulerFromQuaternion(cubeOrn)
-        return (1 - abs(cubeEuler[0])) * 0.1 - abs(self.vt - self.vd) * 0.01
+        linear, angular = p.getBaseVelocity(self.botId)
+        return (1 - abs(cubeEuler[0]))*0.1 + + abs(linear[1] - self.target)*0.01 + abs(self.vt - self.vd)*0.01
     
     def _compute_done(self):
         cubePos, _ = p.getBasePositionAndOrientation(self.botId)

@@ -1,4 +1,5 @@
 import os
+import os.path as path
 import sys
 import gym
 import numpy as np
@@ -15,7 +16,9 @@ from stable_baselines.common.callbacks import CheckpointCallback
 
 if __name__=="__main__":
     env = gym.make("balancebot-v0")
-    checkpoint_callback = CheckpointCallback(save_freq=10000, save_path='././plots/',name_prefix='FirstModel')
-    model = DQN('MlpPolicy', env, learning_rate=1e-3, prioritized_replay=True, verbose=1, tensorboard_log="././model")
-    model.learn(total_timesteps=int(1e6), tb_log_name="FirstRun", reset_num_timesteps=False, callback=checkpoint_callback)
-    model.save("FirstModelFinal")
+    checkpoint_callback = CheckpointCallback(save_freq=10000, save_path='./models',name_prefix='FirstModelForward')
+    model = DQN.load("./prevmodel/FirstModel_160000_steps")
+    model.set_env(env)
+    model.exploration_initial_eps = 0.4
+    model.learn(total_timesteps=int(1e5), tb_log_name="FirstRunForward", reset_num_timesteps=False, callback=checkpoint_callback)
+    model.save("FirstModelFinalForward")
