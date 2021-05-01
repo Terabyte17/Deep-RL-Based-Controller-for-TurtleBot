@@ -1,4 +1,9 @@
-# Exploratory_Project_Self_Balancing_2_Wheeled_Robot
+# Controller for Self Balancing and Locomotion of 2 wheeled robot
+Branches-
+main - for self balancing
+locomotion - for moving around
+pid - pid based controller
+plane variation - under progress
 ### Environment Installation Instructions
 make virtual env in your laptop (not in repository)
 activate virtual env (do this otherwise tensorflow versions will mess up) :)
